@@ -80,9 +80,9 @@ functions:
         Action:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.BOOKS_TABLE}/index/${self:provider.environment.BOOK_ID_INDEX_NAME}
-    # deploymentSettings:
-    #   type: Linear10PercentEvery1Minute
-    #   alias: Live
+    deploymentSettings:
+      type: Linear10PercentEvery1Minute
+      alias: Live
 
   CreateBook:
     handler: src/lambda/http/createBook.handler
@@ -103,9 +103,9 @@ functions:
         Action:
           - dynamodb:PutItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.BOOKS_TABLE}
-    # deploymentSettings:
-    #   type: Linear10PercentEvery1Minute
-    #   alias: Live
+    deploymentSettings:
+      type: Linear10PercentEvery1Minute
+      alias: Live
 
   UpdateBook:
     handler: src/lambda/http/updateBook.handler
@@ -131,9 +131,9 @@ functions:
         Action:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.BOOKS_TABLE}/index/${self:provider.environment.BOOK_ID_INDEX_NAME}
-    # deploymentSettings:
-    #   type: Linear10PercentEvery1Minute
-    #   alias: Live
+    deploymentSettings:
+      type: Linear10PercentEvery1Minute
+      alias: Live
 
   GetBook:
     handler: src/lambda/http/getBook.handler
@@ -152,9 +152,9 @@ functions:
         Action:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.BOOKS_TABLE}/index/${self:provider.environment.BOOK_ID_INDEX_NAME}
-    # deploymentSettings:
-    #   type: Linear10PercentEvery1Minute
-    #   alias: Live
+    deploymentSettings:
+      type: Linear10PercentEvery1Minute
+      alias: Live
 
 
   DeleteBook:
@@ -175,9 +175,9 @@ functions:
         Action:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.BOOKS_TABLE}/index/${self:provider.environment.BOOK_ID_INDEX_NAME}
-    # deploymentSettings:
-    #   type: Linear10PercentEvery1Minute
-    #   alias: Live
+    deploymentSettings:
+      type: Linear10PercentEvery1Minute
+      alias: Live
 
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
@@ -202,9 +202,9 @@ functions:
           - s3:PutObject
           - s3:GetObject
         Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
-    # deploymentSettings:
-    #   type: Linear10PercentEvery1Minute
-    #   alias: Live
+    deploymentSettings:
+      type: Linear10PercentEvery1Minute
+      alias: Live
 
 resources:
   Resources:

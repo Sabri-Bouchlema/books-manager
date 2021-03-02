@@ -1,9 +1,8 @@
 import * as uuid from 'uuid'
 
-import { CreateBookRequest } from '../requests/CreateBookRequest'
+import { UpsertBookRequest } from '../requests/UpsertBookRequest'
 import { BookAccess } from '../dataLayer/bookAccess'
 import { BookItem } from '../models/BookItem';
-import { UpdateBookRequest } from '../requests/UpdateBookRequest';
 
 const bookAccess = new BookAccess()
 
@@ -12,7 +11,7 @@ export async function getAllBooks(userId: string): Promise<BookItem[]> {
 }
 
 export async function createBook(
-  createBookRequest: CreateBookRequest,
+  createBookRequest: UpsertBookRequest,
   userId: string
 ): Promise<BookItem> {
 
@@ -20,16 +19,23 @@ export async function createBook(
     bookId: uuid.v4(),
     userId: userId,
     name: createBookRequest.name,
-    dueDate: createBookRequest.dueDate,
-    createdAt: new Date().toISOString(),
-    done: false
+    description: createBookRequest.description,
+    published: createBookRequest.published,
+    createdAt: new Date().toISOString()
   })
+}
+
+export async function getBook(
+  userId: string,
+  bookId: string
+): Promise<BookItem> {
+  return await bookAccess.getBookItem(userId, bookId);
 }
 
 export async function updateBook(
   userId: string,
   bookId: string,
-  updatedBook: UpdateBookRequest
+  updatedBook: UpsertBookRequest
 ): Promise<void> {
   await bookAccess.updateBook(userId, bookId, updatedBook);
 }

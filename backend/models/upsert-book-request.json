@@ -6,17 +6,17 @@
         "name": {
             "type": "string"
         },
-        "dueDate": {
+        "description": {
             "type": "string"
         },
-        "done": {
+        "published": {
             "type": "boolean"
         }
     },
     "required": [
         "name",
-        "dueDate",
-        "done"
+        "description",
+        "published"
     ],
     "additionalProperties": false
 }

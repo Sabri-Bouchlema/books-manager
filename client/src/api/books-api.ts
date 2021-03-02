@@ -1,8 +1,7 @@
 import { apiEndpoint } from '../config'
 import { Book } from '../types/Book';
-import { CreateBookRequest } from '../types/CreateBookRequest';
 import Axios from 'axios'
-import { UpdateBookRequest } from '../types/UpdateBookRequest';
+import { UpsertBookRequest } from '../types/UpsertBookRequest';
 
 export async function getBooks(idToken: string): Promise<Book[]> {
   console.log('Fetching books')
@@ -19,9 +18,22 @@ export async function getBooks(idToken: string): Promise<Book[]> {
 
 export async function createBook(
   idToken: string,
-  newBook: CreateBookRequest
+  newBook: UpsertBookRequest
 ): Promise<Book> {
   const response = await Axios.post(`${apiEndpoint}/books`, JSON.stringify(newBook), {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${idToken}`
+    }
+  })
+  return response.data.item
+}
+
+export async function getBook(
+  idToken: string,
+  bookId: string
+): Promise<Book> {
+  const response = await Axios.get(`${apiEndpoint}/books/${bookId}`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -33,7 +45,7 @@ export async function createBook(
 export async function patchBook(
   idToken: string,
   bookId: string,
-  updatedBook: UpdateBookRequest
+  updatedBook: UpsertBookRequest
 ): Promise<void> {
   await Axios.patch(`${apiEndpoint}/books/${bookId}`, JSON.stringify(updatedBook), {
     headers: {

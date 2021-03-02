@@ -54,12 +54,9 @@ custom:
         title: Book API
         description: Serverless application for book management
     models:
-      - name: CreateBookRequest
+      - name: UpsertBookRequest
         contentType: application/json
-        schema: ${file(models/create-book-request.json)}
-      - name: UpdateBookRequest
-        contentType: application/json
-        schema: ${file(models/update-book-request.json)}
+        schema: ${file(models/upsert-book-request.json)}
 
 functions:
 
@@ -100,7 +97,7 @@ functions:
             summary: Create a new book
             description: Create a new book
             requestModels:
-              'application/json': CreateBookRequest
+              'application/json': UpsertBookRequest
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -123,7 +120,7 @@ functions:
             summary: Update a book
             description: Update a book
             requestModels:
-              'application/json': UpdateBookRequest
+              'application/json': UpsertBookRequest
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -137,6 +134,28 @@ functions:
     # deploymentSettings:
     #   type: Linear10PercentEvery1Minute
     #   alias: Live
+
+  GetBook:
+    handler: src/lambda/http/getBook.handler
+    events:
+      - http:
+          method: get
+          path: books/{bookId}
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.BOOKS_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.BOOKS_TABLE}/index/${self:provider.environment.BOOK_ID_INDEX_NAME}
+    # deploymentSettings:
+    #   type: Linear10PercentEvery1Minute
+    #   alias: Live
+
 
   DeleteBook:
     handler: src/lambda/http/deleteBook.handler

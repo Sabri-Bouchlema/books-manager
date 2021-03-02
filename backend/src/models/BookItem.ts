@@ -3,7 +3,7 @@ export interface BookItem {
   bookId: string
   createdAt: string
   name: string
-  dueDate: string
-  done: boolean
+  description: string
+  published: boolean
   attachmentUrl?: string
 }

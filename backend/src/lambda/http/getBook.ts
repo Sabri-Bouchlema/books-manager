@@ -2,18 +2,17 @@ import 'source-map-support/register'
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 
-import { UpsertBookRequest } from '../../requests/UpsertBookRequest'
-import { createBook } from '../../businessLogic/books'
+import { getBook } from '../../businessLogic/books'
 import { getUserId } from '../utils'
 import * as middy from 'middy'
 import { cors } from 'middy/middlewares'
 
 export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  const newBook: UpsertBookRequest = JSON.parse(event.body)
+  const bookId = event.pathParameters.bookId
 
   const userId = getUserId(event);
 
-  const item = await createBook(newBook, userId)
+  const item = await getBook(userId, bookId)
 
   return {
     statusCode: 201,

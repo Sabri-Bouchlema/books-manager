@@ -1,8 +1,9 @@
 import * as AWS from 'aws-sdk'
 import * as AWSXRay from 'aws-xray-sdk'
+import * as uuid from 'uuid'
 
 import { BookItem } from '../models/BookItem'
-import { UpdateBookRequest } from '../requests/UpdateBookRequest'
+import { UpsertBookRequest } from '../requests/UpsertBookRequest'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { createLogger } from '../utils/logger'
 
@@ -51,7 +52,7 @@ export class BookAccess {
     return book
   }
 
-  async updateBook(userId: string, bookId: string, updatedbook: UpdateBookRequest): Promise<void> {
+  async updateBook(userId: string, bookId: string, updatedbook: UpsertBookRequest): Promise<void> {
     logger.info(`Start updating book item  ${updatedbook}`)
 
     const bookItem = await this.getBookItem(userId, bookId);
@@ -63,12 +64,12 @@ export class BookAccess {
         createdAt: bookItem.createdAt
       },
       ConditionExpression: "bookId =:bookId",
-      UpdateExpression: "set #namefield = :name, dueDate=:dueDate, done=:done",
+      UpdateExpression: "set #namefield = :name, published=:published, description=:description",
       ExpressionAttributeValues: {
         ":bookId": bookItem.bookId,
         ":name": updatedbook.name,
-        ":dueDate": updatedbook.dueDate,
-        ":done": updatedbook.done
+        ":published": updatedbook.published,
+        ":description": updatedbook.description
       },
       ExpressionAttributeNames: {
         "#namefield": "name"

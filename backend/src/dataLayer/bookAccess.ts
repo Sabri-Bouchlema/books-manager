@@ -1,6 +1,5 @@
 import * as AWS from 'aws-sdk'
 import * as AWSXRay from 'aws-xray-sdk'
-import * as uuid from 'uuid'
 
 import { BookItem } from '../models/BookItem'
 import { UpsertBookRequest } from '../requests/UpsertBookRequest'
